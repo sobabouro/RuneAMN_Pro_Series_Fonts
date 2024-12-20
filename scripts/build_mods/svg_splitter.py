@@ -116,12 +116,12 @@ def getSettingsFromSettingFilePath(pathSettingFile):
 	foSetting = open(pathSettingFile, 'r')
 	
 	reComment = re.compile("^(#|//)")
-	reSetting = re.compile("FontName:(?P<fontName>\w+)"\
+	reSetting = re.compile(r"FontName:(?P<fontName>\w+)"\
 	" Width:(?P<width>[0-9]+) Height:(?P<height>[0-9]+)"\
 	" baseline:(?P<baseline>[0-9]+)"\
 	" isFree:(?P<isFree>(yes|no)) isAssignLower:(?P<isAssignLower>(yes|no))",
 	 re.IGNORECASE)
-	reListContent = re.compile('(u[0-9a-fA-F]{4}|u----|[^\s]|[\s])[\s]')
+	reListContent = re.compile(r'(u[0-9a-fA-F]{4}|u----|[^\s]|[\s])[\s]')
 
 	isUcList = False
 	isCountRow = False
@@ -166,7 +166,7 @@ def getSettingsFromSettingFilePath(pathSettingFile):
  @param ユニコードコードポイント文字列(ex.u"0024")
  		(Todo: エラー処理)
 """
-reAlphabet = re.compile("([^\s])\Z")
+reAlphabet = re.compile(r"([^\s])\Z")
 reUnicodeCodePoint = re.compile("u([0-9a-fA-F]{4})")
 def getUncodeCodepointFromLatin(latin):
 	if reAlphabet.match(latin):
@@ -259,7 +259,7 @@ def ravelGroup(dstsTable, settings, svgGroup):
 """
 @brief svgPathを切り出す
 """
-reHeadPoint = re.compile("[^-0-9]+(?P<x>-?[0-9]+(\.[0-9]+)?)[^-0-9]*(?P<y>-?[0-9]+(\.[0-9]+)?)")
+reHeadPoint = re.compile(r"[^-0-9]+(?P<x>-?[0-9]+(\.[0-9]+)?)[^-0-9]*(?P<y>-?[0-9]+(\.[0-9]+)?)")
 def ravelPath(dstsTable, settings, svgPath):
 	svgTransform = svgPath.get('transform')
 	if svgTransform:
@@ -289,8 +289,8 @@ def ravelPath(dstsTable, settings, svgPath):
 @param 移動量
 @return 移動後のsvgPath
 """
-rePathDSplit = re.compile("\s*(?P<match>[A-Za-z]|-?[\d\.]+),?\s*(?P<other>.*$)")
-reHeadAlphabet = re.compile("[^-0-9a-zA-Z]*(?P<headAlphabet>[a-zA-Z])(?P<other>.*)")
+rePathDSplit = re.compile(r"\s*(?P<match>[A-Za-z]|-?[\d\.]+),?\s*(?P<other>.*$)")
+reHeadAlphabet = re.compile(r"[^-0-9a-zA-Z]*(?P<headAlphabet>[a-zA-Z])(?P<other>.*)")
 def moveSvgPath(svgPath, xMove, yMove):
 	commandString = '' # SVG path要素の種別
 	src = svgPath.get('d')
@@ -400,8 +400,8 @@ def ravelRect(dstsTable, settings, svgRect):
 """
 @brief svgPolygonを切り出す
 """
-reHeadNumeric = re.compile("[^-0-9]*(?P<headNumeric>-?[0-9]+(\.[0-9]+)?)[,\s]?\s*(?P<other>.*)?")
-#reHeadNumericDual = re.compile("[^-0-9a-zA-Z]*(?P<headNumeric1>-?[0-9](\.[0-9]+)?),?(?P<headNumeric2>-?[0-9](\.[0-9]+)?)(?P<other>.+)")
+reHeadNumeric = re.compile(r"[^-0-9]*(?P<headNumeric>-?[0-9]+(\.[0-9]+)?)[,\s]?\s*(?P<other>.*)?")
+#reHeadNumericDual = re.compile(r"[^-0-9a-zA-Z]*(?P<headNumeric1>-?[0-9](\.[0-9]+)?),?(?P<headNumeric2>-?[0-9](\.[0-9]+)?)(?P<other>.+)")
 def ravelPolygon(dstsTable, settings, svgPolygon):
 	svgTransform = svgPolygon.get('transform')
 	if svgTransform:
@@ -519,8 +519,8 @@ def ravelEllipse(dstsTable, settings, svgCircle):
 		transform/matrix 未検出時: 0要素の配列
 		エラー時: その他
 """
-reTransformTranslate = re.compile("translate\((?P<tx>-?\d+(.\d+)?)[,\s]\s*(?P<ty>-?\d+(.\d+)?)\)")
-reTransformMatrix = re.compile("matrix\((?P<a>-?\d+(.\d+)?)[,\s]\s*(?P<b>-?\d+(.\d+)?)?[,\s]\s*(?P<c>-?\d+(.\d+)?)[,\s]\s*(?P<d>-?\d+(.\d+)?)[,\s]\s*(?P<e>-?\d+(.\d+)?)[,\s]\s*(?P<f>-?\d+(.\d+)?)\)")
+reTransformTranslate = re.compile(r"translate\((?P<tx>-?\d+(.\d+)?)[,\s]\s*(?P<ty>-?\d+(.\d+)?)\)")
+reTransformMatrix = re.compile(r"matrix\((?P<a>-?\d+(.\d+)?)[,\s]\s*(?P<b>-?\d+(.\d+)?)?[,\s]\s*(?P<c>-?\d+(.\d+)?)[,\s]\s*(?P<d>-?\d+(.\d+)?)[,\s]\s*(?P<e>-?\d+(.\d+)?)[,\s]\s*(?P<f>-?\d+(.\d+)?)\)")
 def getTransformFromSvgElem(svgElem):
 	sTransformValue = svgElem.get('transform')
 	if not sTransformValue:
